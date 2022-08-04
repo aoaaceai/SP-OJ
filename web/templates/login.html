@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <title>
+            LOGIN
+        </title>
+    </head>
+    <body>
+        {% if failed %}
+        <div>
+            Login failed...
+        </div>
+        {% endif %}
+        <form action="/login" method="post">
+            <label for="uid">uid: </label>
+            <input type="text" name="uid">
+            <label for="password">password: </label>
+            <input type="password" name="password">
+            <input type="submit" value="login">
+        </form>
+    </body>
+</html>

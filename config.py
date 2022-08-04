@@ -1,0 +1,1 @@
+loginSecretKey = 'aoeuhtns'
