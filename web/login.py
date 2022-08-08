@@ -17,13 +17,18 @@ def getCookie(request, key):
     except:
         return None
 
-def isLoggedIn(request):
+def getUid(request):
     uid = getCookie(request, 'login')
     return uid
 
+def requireLogin():
+    response = flask.redirect('/login')
+    response.delete_cookie('login')
+    return response
+
 @blueprint.route('/login', methods=['GET', 'POST'])
 def login():
-    if isLoggedIn(flask.request):
+    if getUid(flask.request):
         return flask.redirect('/')
     elif flask.request.method == 'GET':
         failed = flask.request.args.get('failed') is not None

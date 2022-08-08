@@ -1,11 +1,11 @@
 import sqlite3
-from os.path import dirname
 import bcrypt
 from contextlib import contextmanager
+import config.db as config
 
 @contextmanager
-def DBConn():
-    con = sqlite3.connect(dirname(__file__) + '/users.db')
+def DBConn(path):
+    con = sqlite3.connect(path)
     try:
         yield con
     finally:
@@ -13,7 +13,7 @@ def DBConn():
 
 
 def checkPassword(uid: str, password: str):
-    with DBConn() as con:
+    with DBConn(config.userDBPath) as con:
         result = con.cursor().execute('SELECT password FROM users WHERE uid=? LIMIT 1', (uid,)).fetchone()
 
         if not result:
