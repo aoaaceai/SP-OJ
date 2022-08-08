@@ -1,7 +1,7 @@
 import flask
 from web.templates import getTemplateFolder
 import db
-import config
+import config.login as config
 
 blueprint = flask.Blueprint('login', __name__, template_folder=getTemplateFolder())
 blueprint.secret_key = config.loginSecretKey

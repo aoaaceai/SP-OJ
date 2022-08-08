@@ -1,5 +1,5 @@
 import subprocess
-import config
+import config.isolation as config
 
 def execProgram(args, cwd: str='/', tmpfs: bool=False, mountRW: dict={}, mountRO: dict={}, env: dict=config.defaultEnv):
     command = ['nsjail', '-Q', '-c', config.chrootPath, '-D', cwd]
