@@ -3,6 +3,8 @@ from .templates import getTemplateFolder
 from . import login
 from problem import Problem
 import judge
+from werkzeug.exceptions import RequestEntityTooLarge
+import config.problem as config
 
 defaultProblems = [
     Problem(0, 'aoeu', 10, 'htns', 'desc'),
@@ -10,6 +12,7 @@ defaultProblems = [
 ]
 
 blueprint = flask.Blueprint('problems', __name__, template_folder=getTemplateFolder())
+blueprint.config['MAX_CONTENT_LENGTH'] = config.uploadSizeLimit
 
 
 @blueprint.route('/problems')
@@ -47,7 +50,13 @@ def submit(pid):
         return flask.redirect(f'/problems/{pid}')
 
     dirname = judge.mkdir()
-    file.save(f'{dirname}/submission.zip')
+    try:
+        file.save(f'{dirname}/submission.zip')
+    except RequestEntityTooLarge:
+        flask.flash('File too large')
+        judge.cleanup(dirname)
+        return flask.redirect(f'problems/{pid}')
+
     jid = judge.run(defaultProblems[pid], dirname)
 
     return flask.redirect(f'/result/{jid}')

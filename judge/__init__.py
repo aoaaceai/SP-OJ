@@ -14,11 +14,14 @@ def mkdir():
 def run(problem: Problem, workDir: str):
     jid = uuid.uuid4().hex
 
-    child = multiprocessing.Process(target=worker, args=(jid, problem, workDir))
-    child.start()
+    multiprocessing.Process(target=worker, args=(jid, problem, workDir)).start()
 
     return jid
 
 def worker(jid: str, problem: Problem, workDir: str):
     time.sleep(5)
+    cleanup(workDir)
+    print('work done')
+
+def cleanup(workDir: str):
     shutil.rmtree(workDir, ignore_errors=True)
