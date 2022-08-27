@@ -2,6 +2,7 @@ import flask
 from .templates import getTemplateFolder
 from . import login
 from problem import Problem
+import judge
 
 defaultProblems = [
     Problem(0, 'aoeu', 10, 'htns', 'desc'),
@@ -45,4 +46,8 @@ def submit(pid):
         flask.flash('file is empty')
         return flask.redirect(f'/problems/{pid}')
 
-    return 'TODO: receive the file'
+    dirname = judge.mkdir()
+    file.save(f'{dirname}/submission.zip')
+    jid = judge.run(defaultProblems[pid], dirname)
+
+    return flask.redirect(f'/result/{jid}')
