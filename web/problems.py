@@ -21,6 +21,7 @@ def problems():
 
 @blueprint.route('/problems/<int:pid>')
 def problem(pid):
+    # TODO: add problem visibility
     try:
         return flask.render_template('problem.html', problem=defaultProblems[pid])
     except IndexError:
@@ -31,5 +32,17 @@ def submit(pid):
     uid = login.getUid(flask.request)
     if not uid:
         return login.requireLogin()
+
+    if pid >= len(defaultProblems):
+        flask.abort(404)
+
+    if 'file' not in flask.request.files:
+        flask.flash('no file')
+        return flask.redirect(f'/problems/{pid}')
+
+    file = flask.request.files['file']
+    if file.filename == '':
+        flask.flash('file is empty')
+        return flask.redirect(f'/problems/{pid}')
 
     return 'TODO: receive the file'
