@@ -1,11 +1,10 @@
 import flask
-from web.templates import getTemplateFolder
+from .templates import getTemplateFolder
 app = flask.Flask('main', template_folder=getTemplateFolder())
 
-from web import login
-from web import problems
-app.register_blueprint(login.blueprint)
-app.register_blueprint(problems.blueprint)
+from . import login, problems
+for page in (login, problems):
+    app.register_blueprint(page.blueprint)
 
 @app.route('/')
 def root():

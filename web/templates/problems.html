@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <title>
+            This is the problems page
+        </title>
+    </head>
+    <body>
+        <table>
+            <th>
+                ID
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Weight
+            </th>
+            {% for problem in problems %}
+            <tr>
+                <td>
+                    {{ problem.id }}
+                </td>
+                <td>
+                    <a href="/problems/{{ problem.id }}">
+                        {{ problem.name }}
+                    </a>
+                </td>
+                <td>
+                    {{ problem.weight }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

@@ -1,5 +1,5 @@
 import flask
-from web.templates import getTemplateFolder
+from .templates import getTemplateFolder
 import db
 import config.login as config
 
