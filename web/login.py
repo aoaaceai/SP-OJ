@@ -31,8 +31,7 @@ def login():
     if getUid(flask.request):
         return flask.redirect('/')
     elif flask.request.method == 'GET':
-        failed = flask.request.args.get('failed') is not None
-        return flask.render_template('login.html', failed=failed)
+        return flask.render_template('login.html')
     else:
         uid = flask.request.form.get('uid')
         password = flask.request.form.get('password')
@@ -40,7 +39,8 @@ def login():
         result = db.checkPassword(uid, password)
 
         if not result:
-            return flask.redirect('/login?failed')
+            flask.flash('Login failed')
+            return flask.redirect('/login')
 
         response = flask.redirect('/')
         response.set_cookie('login', signCookie(uid))

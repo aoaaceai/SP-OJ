@@ -1,4 +1,3 @@
-- Specify the mountpoint of the submission
 - Specify the format of the judge output
 - Use python-docker
 - List the problems

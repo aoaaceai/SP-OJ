@@ -12,7 +12,6 @@ defaultProblems = [
 ]
 
 blueprint = flask.Blueprint('problems', __name__, template_folder=getTemplateFolder())
-blueprint.config['MAX_CONTENT_LENGTH'] = config.uploadSizeLimit
 
 
 @blueprint.route('/problems')
