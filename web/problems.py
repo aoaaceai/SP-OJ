@@ -2,17 +2,17 @@ import flask
 from .templates import getTemplateFolder
 from . import login
 from problem import Problem
-import judge
+from judge import Judge
 from werkzeug.exceptions import RequestEntityTooLarge
-import config.problem as config
+
+judge = Judge()
 
 defaultProblems = [
-    Problem(0, 'aoeu', 10, 'htns', 'desc'),
-    Problem(1, 'htns', 20, 'aoeu', 'desc2')
+    Problem(0, 'aoeu', 10, 'debian:stable', 'desc'),
+    Problem(1, 'htns', 20, 'debian:stable', 'desc2')
 ]
 
 blueprint = flask.Blueprint('problems', __name__, template_folder=getTemplateFolder())
-
 
 @blueprint.route('/problems')
 def problems():
@@ -24,7 +24,6 @@ def problems():
 
 @blueprint.route('/problems/<int:pid>')
 def problem(pid):
-    # TODO: add problem visibility
     try:
         return flask.render_template('problem.html', problem=defaultProblems[pid])
     except IndexError:
@@ -53,7 +52,7 @@ def submit(pid):
         file.save(f'{dirname}/submission.zip')
     except RequestEntityTooLarge:
         flask.flash('File too large')
-        judge.cleanup(dirname)
+        judge.rmdir(dirname)
         return flask.redirect(f'problems/{pid}')
 
     jid = judge.run(defaultProblems[pid], dirname)

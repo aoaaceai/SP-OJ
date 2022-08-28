@@ -1,27 +1,31 @@
 import tempfile
+from .timedDS import TimedDict
 from problem import Problem
 import uuid
 import multiprocessing
 import time
 import shutil
-from . import reaper
 
-reaper.start()
+class Judge:
+    def __init__(self):
+        self.jobs = TimedDict()
 
-def mkdir():
-    return tempfile.mkdtemp()
+    @staticmethod
+    def mkdir():
+        return tempfile.mkdtemp()
 
-def run(problem: Problem, workDir: str):
-    jid = uuid.uuid4().hex
+    @staticmethod
+    def rmdir(workDir: str):
+        shutil.rmtree(workDir, ignore_errors=True)
 
-    multiprocessing.Process(target=worker, args=(jid, problem, workDir)).start()
+    def run(self, problem: Problem, workDir: str):
+        jid = uuid.uuid4().hex
 
-    return jid
+        multiprocessing.Process(target=self.worker, args=(jid, problem, workDir), daemon=True).start()
 
-def worker(jid: str, problem: Problem, workDir: str):
-    time.sleep(5)
-    cleanup(workDir)
-    print('work done')
+        return jid
 
-def cleanup(workDir: str):
-    shutil.rmtree(workDir, ignore_errors=True)
+    def worker(self, jid: str, problem: Problem, workDir: str):
+        time.sleep(5)
+        self.rmdir(workDir)
+
