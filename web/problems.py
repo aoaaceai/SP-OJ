@@ -2,10 +2,8 @@ import flask
 from .templates import getTemplateFolder
 from . import login
 from problem import Problem
-from judge import Judge
+import judge
 from werkzeug.exceptions import RequestEntityTooLarge
-
-judge = Judge()
 
 defaultProblems = [
     Problem(0, 'aoeu', 10, 'debian:stable', 'desc'),

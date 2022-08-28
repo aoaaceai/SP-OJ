@@ -7,8 +7,8 @@ app.secret_key = config.secret
 app.config['MAX_CONTENT_LENGTH'] = config.maxContentLength
 
 
-from . import login, problems
-for page in (login, problems):
+from . import login, problems, result
+for page in (login, problems, result):
     app.register_blueprint(page.blueprint)
 
 @app.route('/')
