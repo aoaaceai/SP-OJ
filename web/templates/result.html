@@ -1,15 +1,29 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>
-            Result
-        </title>
+        <title>Result</title>
     </head>
     <body>
         {% if result.ready %}
-            The result is ready.
+        <div>
+            Score: {{ result.score }}/{{ result.weight }}
+        </div>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Verdict</th>
+                <th>Score</th>
+            </tr>
+            {% for subtask in result.subtasks %}
+            <tr>
+                <td>{{ subtask.name }}</td>
+                <td>{{ subtask.verdict }}</td>
+                <td>{{ subtask.score }}/{{ subtask.weight }}</td>
+            </tr>
+            {% endfor %}
+        </table>
         {% else %}
-            The result is not ready yet...
+        The result is not ready yet...
         {% endif %}
     </body>
 </html>

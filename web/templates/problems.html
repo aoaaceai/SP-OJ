@@ -1,34 +1,18 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>
-            This is the problems page
-        </title>
+        <title>This is the problems page</title>
     </head>
     <body>
         <table>
-            <th>
-                ID
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Weight
-            </th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Weight</th>
             {% for problem in problems %}
             <tr>
-                <td>
-                    {{ problem.id }}
-                </td>
-                <td>
-                    <a href="/problems/{{ problem.id }}">
-                        {{ problem.name }}
-                    </a>
-                </td>
-                <td>
-                    {{ problem.weight }}
-                </td>
+                <td>{{ problem.id }}</td>
+                <td><a href="/problems/{{ problem.id }}">{{ problem.name }}</a></td>
+                <td>{{ problem.weight }}</td>
             </tr>
             {% endfor %}
         </table>

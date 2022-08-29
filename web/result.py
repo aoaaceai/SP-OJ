@@ -16,5 +16,7 @@ def result(jid):
     except KeyError:
         flask.abort(404)
 
+    print(judge.jobs)
+    print(result.ready)
     return flask.render_template('result.html', result=result)
     

@@ -6,8 +6,8 @@ import judge
 from werkzeug.exceptions import RequestEntityTooLarge
 
 defaultProblems = [
-    Problem(0, 'aoeu', 10, 'debian:stable', 'desc'),
-    Problem(1, 'htns', 20, 'debian:stable', 'desc2')
+    Problem(0, 'aoeu', 10, 'judger', 'desc'),
+    Problem(1, 'htns', 20, 'judger', 'desc2')
 ]
 
 blueprint = flask.Blueprint('problems', __name__, template_folder=getTemplateFolder())

@@ -34,3 +34,6 @@ class TimedDict:
                     toRemove.append(obj)
             for obj in toRemove:
                 del self.__container[obj]
+
+    def __repr__(self):
+        return '{' + ''.join([f'{repr(key)}: {repr(val[1])}' for key, val in self.__container.items()]) + '}'
