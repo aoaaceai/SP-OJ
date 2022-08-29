@@ -13,8 +13,7 @@ for page in (login, problems, result):
 
 @app.route('/')
 def root():
-    if not login.getUid(flask.request):
-        return login.requireLogin()
+    login.checkLogin(flask.request)
 
     return flask.redirect('/problems')
 

@@ -14,14 +14,14 @@ blueprint = flask.Blueprint('problems', __name__, template_folder=getTemplateFol
 
 @blueprint.route('/problems')
 def problems():
-    uid = login.getUid(flask.request)
-    if not uid:
-        return login.requireLogin()
+    login.checkLogin(flask.request)
 
     return flask.render_template('problems.html', problems=defaultProblems)
 
 @blueprint.route('/problems/<int:pid>')
 def problem(pid):
+    login.checkLogin(flask.request)
+
     try:
         return flask.render_template('problem.html', problem=defaultProblems[pid])
     except IndexError:
@@ -29,9 +29,7 @@ def problem(pid):
 
 @blueprint.route('/problems/<int:pid>/submit', methods=['POST'])
 def submit(pid):
-    uid = login.getUid(flask.request)
-    if not uid:
-        return login.requireLogin()
+    login.checkLogin(flask.request)
 
     if pid >= len(defaultProblems):
         flask.abort(404)

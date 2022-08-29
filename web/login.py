@@ -17,9 +17,12 @@ def getCookie(request, key):
     except:
         return None
 
+def checkLogin(request):
+    if not getCookie(request, 'login'):
+        flask.abort(requireLogin())
+        
 def getUid(request):
-    uid = getCookie(request, 'login')
-    return uid
+    return getCookie(request, 'login')
 
 def requireLogin():
     response = flask.redirect('/login')
