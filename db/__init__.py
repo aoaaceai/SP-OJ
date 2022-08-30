@@ -3,23 +3,15 @@ import bcrypt
 from contextlib import contextmanager
 import config.db as config
 
+# The database should have the following columns:
+# - uid
+# - password (hashed with bcrypt)
+# - role: admin / user
+
 @contextmanager
-def DBConn(path):
-    con = sqlite3.connect(path)
+def UserDB():
+    con = sqlite3.connect(config.userDBPath)
     try:
         yield con
     finally:
         con.close()
-
-
-def checkPassword(uid: str, password: str):
-    with DBConn(config.userDBPath) as con:
-        result = con.cursor().execute('SELECT password FROM users WHERE uid=? LIMIT 1', (uid,)).fetchone()
-
-        if not result:
-            return False
-        else:
-            result = result[0].encode()
-
-        result = bcrypt.checkpw(password.encode(), result)
-        return result

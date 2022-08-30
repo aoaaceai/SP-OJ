@@ -1,6 +1,6 @@
 import flask
 from .templates import getTemplateFolder
-import db
+import user
 import config.login as config
 
 blueprint = flask.Blueprint('login', __name__, template_folder=getTemplateFolder())
@@ -17,21 +17,27 @@ def getCookie(request, key):
     except:
         return None
 
-def checkLogin(request):
-    if not getCookie(request, 'login'):
+def checkLogin():
+    if not getCookie(flask.request, 'login'):
         flask.abort(requireLogin())
         
-def getUid(request):
-    return getCookie(request, 'login')
+def getUid():
+    return getCookie(flask.request, 'login')
 
 def requireLogin():
     response = flask.redirect('/login')
     response.delete_cookie('login')
     return response
 
+def getCurrentUser():
+    u = user.getUser(getUid())
+    if not u:
+        flask.abort(requireLogin())
+    return u
+
 @blueprint.route('/login', methods=['GET', 'POST'])
 def login():
-    if getUid(flask.request):
+    if getUid():
         return flask.redirect('/')
     elif flask.request.method == 'GET':
         return flask.render_template('login.html')
@@ -39,10 +45,10 @@ def login():
         uid = flask.request.form.get('uid')
         password = flask.request.form.get('password')
 
-        result = db.checkPassword(uid, password)
+        result = user.verify(uid, password)
 
         if not result:
-            flask.flash('Login failed', 'danger')
+            flask.flash('Login failed.', 'danger')
             return flask.redirect('/login')
 
         response = flask.redirect('/')

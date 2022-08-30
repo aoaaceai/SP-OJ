@@ -1,8 +1,13 @@
 {% extends 'base.html' %}
 {% block title %}Problems{% endblock %}
 {% block body %}
-<div class="col-10 container-fluid mt-3">
-    <table class="table table-hover table-responsive">
+<div class="col-10 container-fluid">
+    {% if user.isAdmin %}
+    <div class="d-grid mt-3">
+        <a href="/problems/reload" class="btn btn-primary btn-block">Reload Problems</a>
+    </div>
+    {% endif %}
+    <table class="table table-hover table-responsive mt-3">
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Name</th>

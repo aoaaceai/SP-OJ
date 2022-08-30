@@ -13,7 +13,5 @@ for page in (login, problems, result):
 
 @app.route('/')
 def root():
-    login.checkLogin(flask.request)
-
     return flask.redirect('/problems')
 

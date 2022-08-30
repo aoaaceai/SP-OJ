@@ -7,17 +7,24 @@ from werkzeug.exceptions import RequestEntityTooLarge
 
 blueprint = flask.Blueprint('problems', __name__, template_folder=getTemplateFolder())
 
-@blueprint.route('/problems')
+@blueprint.route('/problems/')
 def problems():
-    login.checkLogin(flask.request)
+    login.checkLogin()
+    u = login.getCurrentUser()
+    return flask.render_template('problems.html', problems=problem.getProblems(), user=u)
 
-    return flask.render_template('problems.html', problems=problem.getProblems())
+@blueprint.route('/problems/reload')
+def reloadProblems():
+    login.checkLogin()
+    if login.getCurrentUser().isAdmin:
+        problem.loadProblems()
+    return flask.redirect('/problems')
 
 @blueprint.route('/problems/<int:pid>')
 def singleProblem(pid):
-    login.checkLogin(flask.request)
+    login.checkLogin()
 
-    prob = problem.loadProblem(pid)
+    prob = problem.getProblem(pid)
     if prob:
         return flask.render_template('problem.html', problem=prob)
     else:
@@ -25,20 +32,24 @@ def singleProblem(pid):
 
 @blueprint.route('/problems/<int:pid>/submit', methods=['POST'])
 def submit(pid):
-    login.checkLogin(flask.request)
+    login.checkLogin()
 
-    prob = problem.loadProblem(pid)
+    prob = problem.getProblem(pid)
 
     if not prob:
         flask.abort(404)
 
+    if not prob.available:
+        flask.flash('Problem not available.', 'danger')
+        return flask.redirect(f'/problems/{pid}')
+
     if 'file' not in flask.request.files:
-        flask.flash('no file')
+        flask.flash('No file.', 'danger')
         return flask.redirect(f'/problems/{pid}')
 
     file = flask.request.files['file']
     if file.filename == '':
-        flask.flash('file is empty', 'danger')
+        flask.flash('File is empty.', 'danger')
         return flask.redirect(f'/problems/{pid}')
 
     dirname = judge.mkdir()

@@ -6,6 +6,7 @@ import os
 import traceback
 # Problems should be stored in the following structure:
 # - config.json
+#   - visibility
 #   - name
 #   - weight
 #   - imageName
@@ -25,6 +26,10 @@ class Problem:
     imageName: str
     description: str
 
+    @property
+    def available(self):
+        return datetime.now() <= self.deadline
+
 problems = {}
 
 def loadProblems():
@@ -35,6 +40,8 @@ def loadProblems():
                 info = json.load(f)
             with open(entry.path + '/description.md') as f:
                 description = f.read()
+            if not info['visible']:
+                continue
             pid = int(entry.name)
             deadline = datetime.strptime(info['deadline'], '%Y-%m-%d %H:%M')
             problems[pid] = Problem(pid, info['name'], deadline, info['imageName'], description)
@@ -43,7 +50,7 @@ def loadProblems():
             print(f'skipping {entry.name} due to errors')
             continue
 
-def loadProblem(pid):
+def getProblem(pid):
     if not problems:
         loadProblems()
 

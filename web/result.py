@@ -7,7 +7,7 @@ blueprint = flask.Blueprint('result', __name__, template_folder=getTemplateFolde
 
 @blueprint.route('/result/<jid>')
 def result(jid):
-    login.checkLogin(flask.request)
+    login.checkLogin()
 
     try:
         result = judge.jobs[jid]
