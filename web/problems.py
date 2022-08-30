@@ -6,7 +6,7 @@ import judge
 from werkzeug.exceptions import RequestEntityTooLarge
 
 defaultProblems = [
-    Problem(0, 'aoeu', 10, 'judger', 'desc'),
+    Problem(0, 'aoeu', 10, 'judger', 'aoeu\nhnts'),
     Problem(1, 'htns', 20, 'judger', 'desc2')
 ]
 
@@ -40,7 +40,7 @@ def submit(pid):
 
     file = flask.request.files['file']
     if file.filename == '':
-        flask.flash('file is empty')
+        flask.flash('file is empty', 'danger')
         return flask.redirect(f'/problems/{pid}')
 
     dirname = judge.mkdir()

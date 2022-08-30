@@ -1,20 +1,20 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>This is the problems page</title>
-    </head>
-    <body>
-        <table>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Weight</th>
-            {% for problem in problems %}
-            <tr>
-                <td>{{ problem.id }}</td>
-                <td><a href="/problems/{{ problem.id }}">{{ problem.name }}</a></td>
-                <td>{{ problem.weight }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Problems{% endblock %}
+{% block body %}
+<div class="col-10 container-fluid mt-3">
+    <table class="table table-hover table-responsive">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Weight</th>
+        </tr>
+        {% for problem in problems %}
+        <tr>
+            <th scope="row">{{ problem.id }}</td>
+            <td><a class="link-primary" href="/problems/{{ problem.id }}">{{ problem.name }}</a></td>
+            <td>{{ problem.weight }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

@@ -1,24 +1,19 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>
-            {{ problem.name }}
-        </title>
-    </head>
-    <body>
-        {% with messages = get_flashed_messages(with_categories=false) %}
-        {% if messages %}
-        {% for message in messages %}
-        <div>{{ message }}</div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-        <div id="submission">
-            <form method="post" action="/problems/{{ problem.id }}/submit" enctype="multipart/form-data">
-                <input type="file" name="file">
-                <input type="submit" value="upload">
-            </form>
+{% extends 'base.html' %}
+{% block title %}{{ problem.name }}{% endblock %}
+{% block body %}
+<div class="container mt-3">
+    <h2>Description</h1>
+    <div class="markdown container mt-3">{{ problem.description|safe }}</div>
+</div>
+<div class="container mt-3">
+    <h2>Submission</h2>
+    <form class="container mt-3 row" method="post" action="/problems/{{ problem.id }}/submit" enctype="multipart/form-data">
+        <div class="col-auto">
+            <input type="file" name="file" class="form-control">
         </div>
-        <div id="description">{{ problem.description }}</div>
-    </body>
-</html>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,24 +1,22 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>
-            LOGIN
-        </title>
-    </head>
-    <body>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <div>{{ message }}</div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block body %}
+<div class="col-lg-6 container mt-3 card">
+    <div class="card-body">
+        <h2 class="card-title">Login</h2>
         <form action="/login" method="post">
-            <label for="uid">uid: </label>
-            <input type="text" name="uid">
-            <label for="password">password: </label>
-            <input type="password" name="password">
-            <input type="submit" value="login">
+            <div class="my-3"0>
+                <label for="uid" class="form-label">Username</label>
+                <input type="text" class="form-control" name="uid" placeholder="username">
+            </div>
+            <div class="my-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" placeholder="password">
+            </div>
+            <div class="d-grid my-3">
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </div>
         </form>
-    </body>
-</html>
+    </div>
+</div>
+{% endblock %}

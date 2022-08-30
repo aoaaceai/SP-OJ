@@ -42,7 +42,7 @@ def login():
         result = db.checkPassword(uid, password)
 
         if not result:
-            flask.flash('Login failed')
+            flask.flash('Login failed', 'danger')
             return flask.redirect('/login')
 
         response = flask.redirect('/')
