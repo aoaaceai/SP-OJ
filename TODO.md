@@ -1,1 +1,0 @@
-- Show problems according to the viewer's uid (only the Admin can see hidden problems)
