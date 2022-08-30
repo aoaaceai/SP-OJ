@@ -1,14 +1,9 @@
 import flask
 from .templates import getTemplateFolder
 from . import login
-from problem import Problem
+import problem
 import judge
 from werkzeug.exceptions import RequestEntityTooLarge
-
-defaultProblems = [
-    Problem(0, 'aoeu', 10, 'judger', 'aoeu\nhnts'),
-    Problem(1, 'htns', 20, 'judger', 'desc2')
-]
 
 blueprint = flask.Blueprint('problems', __name__, template_folder=getTemplateFolder())
 
@@ -16,22 +11,25 @@ blueprint = flask.Blueprint('problems', __name__, template_folder=getTemplateFol
 def problems():
     login.checkLogin(flask.request)
 
-    return flask.render_template('problems.html', problems=defaultProblems)
+    return flask.render_template('problems.html', problems=problem.getProblems())
 
 @blueprint.route('/problems/<int:pid>')
-def problem(pid):
+def singleProblem(pid):
     login.checkLogin(flask.request)
 
-    try:
-        return flask.render_template('problem.html', problem=defaultProblems[pid])
-    except IndexError:
+    prob = problem.loadProblem(pid)
+    if prob:
+        return flask.render_template('problem.html', problem=prob)
+    else:
         flask.abort(404)
 
 @blueprint.route('/problems/<int:pid>/submit', methods=['POST'])
 def submit(pid):
     login.checkLogin(flask.request)
 
-    if pid >= len(defaultProblems):
+    prob = problem.loadProblem(pid)
+
+    if not prob:
         flask.abort(404)
 
     if 'file' not in flask.request.files:
@@ -51,6 +49,6 @@ def submit(pid):
         judge.rmdir(dirname)
         return flask.redirect(f'problems/{pid}')
 
-    jid = judge.run(defaultProblems[pid], dirname)
+    jid = judge.run(prob, dirname)
 
     return flask.redirect(f'/result/{jid}')

@@ -6,13 +6,13 @@
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Name</th>
-            <th scope="col">Weight</th>
+            <th scope="col">Deadline</th>
         </tr>
         {% for problem in problems %}
         <tr>
             <th scope="row">{{ problem.id }}</td>
             <td><a class="link-primary" href="/problems/{{ problem.id }}">{{ problem.name }}</a></td>
-            <td>{{ problem.weight }}</td>
+            <td>{{ problem.deadline.strftime('%Y-%m-%d %H:%M') }}</td>
         </tr>
         {% endfor %}
     </table>
