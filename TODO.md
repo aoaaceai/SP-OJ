@@ -1,4 +1,4 @@
 - Show problems according to the viewer's uid (only the Admin can see hidden problems)
-- A system to save / reload the problems
 - An ID check has to happen somewhere when uploading a new problem
 - Add problem visibility
+- Prevent submissions after deadline

@@ -2,11 +2,10 @@
 {% block title %}{{ problem.name }}{% endblock %}
 {% block body %}
 <div class="container mt-3">
-    <h2>Description</h1>
     <div class="markdown container mt-3">{{ problem.description|safe }}</div>
 </div>
 <div class="container mt-3">
-    <h2>Submission</h2>
+    <h1>Submission</h1>
     <form class="container mt-3 row" method="post" action="/problems/{{ problem.id }}/submit" enctype="multipart/form-data">
         <div class="col-auto">
             <input type="file" name="file" class="form-control">
