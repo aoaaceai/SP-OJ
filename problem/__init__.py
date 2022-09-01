@@ -24,6 +24,7 @@ class Problem:
     name: str
     deadline: datetime
     imageName: str
+    quota: int
     description: str
 
     @property
@@ -44,7 +45,7 @@ def loadProblems():
                 continue
             pid = int(entry.name)
             deadline = datetime.strptime(info['deadline'], '%Y-%m-%d %H:%M')
-            problems[pid] = Problem(pid, info['name'], deadline, info['imageName'], description)
+            problems[pid] = Problem(pid, info['name'], deadline, info['imageName'], info['quota'], description)
         except:
             print(traceback.format_exc())
             print(f'skipping {entry.name} due to errors')

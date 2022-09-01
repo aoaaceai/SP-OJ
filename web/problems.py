@@ -4,6 +4,7 @@ from . import login
 import problem
 import judge
 from werkzeug.exceptions import RequestEntityTooLarge
+from quota import useQuota, getQuota
 
 blueprint = flask.Blueprint('problems', __name__, template_folder=getTemplateFolder())
 
@@ -11,7 +12,7 @@ blueprint = flask.Blueprint('problems', __name__, template_folder=getTemplateFol
 def problems():
     login.checkLogin()
     u = login.getCurrentUser()
-    return flask.render_template('problems.html', problems=problem.getProblems(), user=u)
+    return flask.render_template('problems.html', problems=problem.getProblems(), user=u, getQuota=getQuota)
 
 @blueprint.route('/problems/reload')
 def reloadProblems():
@@ -35,12 +36,17 @@ def submit(pid):
     login.checkLogin()
 
     prob = problem.getProblem(pid)
+    user = login.getCurrentUser()
 
     if not prob:
         flask.abort(404)
 
     if not prob.available:
         flask.flash('Problem not available.', 'danger')
+        return flask.redirect(f'/problems/{pid}')
+
+    if not useQuota(pid, user.uid):
+        flask.flash('Quota Exceeded.', 'danger')
         return flask.redirect(f'/problems/{pid}')
 
     if 'file' not in flask.request.files:

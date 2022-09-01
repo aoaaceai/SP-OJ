@@ -20,7 +20,7 @@ class User:
 
 def getUser(uid: str):
     with db.UserDB() as con:
-        result = con.cursor().execute('SELECT uid, password, role FROM users WHERE uid=? LIMIT 1', (uid,)).fetchone()
+        result = con.execute('SELECT uid, password, role FROM users WHERE uid=? LIMIT 1', (uid,)).fetchone()
 
         if result:
             return User(result[0], result[1].encode(), result[2])
