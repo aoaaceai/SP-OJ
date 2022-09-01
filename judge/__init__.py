@@ -4,15 +4,16 @@ from .result import Result
 import config.judge as config
 from problem import Problem
 import uuid
-import threading
 import shutil
 import docker
 from docker.types import Mount
 import json
 import traceback
+from .threadPool import ThreadPool
 
 jobs = TimedDict(config.resultLifetime)
 dockerClient = docker.from_env()
+pool = ThreadPool(config.threadPoolSize)
 
 def mkdir():
     return tempfile.mkdtemp()
@@ -24,7 +25,7 @@ def run(problem: Problem, workDir: str):
     jid = uuid.uuid4().hex
 
     jobs[jid] = Result()
-    threading.Thread(target=worker, args=(jid, problem, workDir), daemon=True).start()
+    pool.addThread(worker, args=(jid, problem, workDir))
 
     return jid
 
