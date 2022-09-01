@@ -44,7 +44,7 @@ def resetQuota(pid: int, uid: str):
         return True
 
 def resetQuotas():
-    print('resetting...')
+    print('Resetting quotas...')
     problems = getProblems()
 
     with db.QuotaDB() as con:

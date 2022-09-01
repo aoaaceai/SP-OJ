@@ -1,3 +1,1 @@
-- All global variable initialisations sholud have a main thread check beforehand
-- Add resource limits to the container image
 - Refactor the user and quota related part so DB related operations stays in db/
