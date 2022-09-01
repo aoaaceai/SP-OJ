@@ -58,14 +58,14 @@ def submit(pid):
         flask.flash('File is empty.', 'danger')
         return flask.redirect(f'/problems/{pid}')
 
-    dirname = judge.mkdir()
+    jid = judge.new()
     try:
-        file.save(f'{dirname}/submission.zip')
+        judge.saveZip(jid, file)
     except RequestEntityTooLarge:
-        flask.flash('File too large')
-        judge.rmdir(dirname)
-        return flask.redirect(f'problems/{pid}')
+        flask.flash('File too large', 'danger')
+        judge.rmZip(jid)
+        return flask.redirect(f'/problems/{pid}')
 
-    jid = judge.run(prob, dirname)
+    judge.run(jid, prob)
 
     return flask.redirect(f'/result/{jid}')
