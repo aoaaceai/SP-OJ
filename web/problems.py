@@ -46,7 +46,7 @@ def submit(pid):
         return flask.redirect(f'/problems/{pid}')
 
     if not useQuota(pid, user.uid):
-        flask.flash('Quota Exceeded.', 'danger')
+        flask.flash('Quota exceeded.', 'danger')
         return flask.redirect(f'/problems/{pid}')
 
     if 'file' not in flask.request.files:
